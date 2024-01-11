@@ -6,13 +6,7 @@
 
 {% block content %}
     <h3>Welcome!</h3>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <input type="text" name="source_url">
-        <button type="submit">Submit</button>
-        <button type="reset">Reset</button>
-    </form>
-
+    <a href="{% url 'news_sources' %}" class="btn btn-outline-primary">Consult news sources</a>
     <hr/>
     <h3 class="mb-4">Feed : </h3>
     {% if articles %}
@@ -31,6 +25,7 @@
             {% endfor %}
         </div>
     {% else %}
-        <p>Verify your link!</p>
+        <p style="display: inline-block;" class="me-3">You didn't add any RSS links!</p>
+        <a href="{% url 'news_sources' %}" class="btn btn-outline-success">Add Now</a>
     {% endif %}
 {% endblock %}

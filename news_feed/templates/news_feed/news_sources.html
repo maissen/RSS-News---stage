@@ -1,0 +1,69 @@
+<!-- news_feed.html -->
+
+{% extends 'base.html' %}
+
+{% block page_title %}Add Sources{% endblock page_title %}
+
+{% block content %}
+
+    <h3>News sources !</h3>
+    <a href="{% url 'news_feed' %}">News Feed</a>
+    <hr>
+    <div class="row">
+
+        <div class="col-12 col-lg-6">
+            Add new sources
+            <hr>
+            <form action="{% url 'add_source' %}" method="POST" class="row">
+                <div class="col-7">
+                    {% csrf_token %}
+                    <div class="row g-3 align-items-center">
+                        <div class="col-auto">
+                            <label for="link" class="col-form-label">Link : </label>
+                        </div>
+                        <div class="col-auto">
+                            <input type="text" id="link" class="form-control" name="source_link" placeholder="Enter RSS link..." required autofocus>
+                        </div>
+                        </div>
+                </div>
+                <div class="col-5">
+                    <button class="btn btn-success" type="submit">Add Source</button>
+                    <button class="btn btn-danger" type="reset">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            Current sources
+            <hr>
+            {% if not links %}
+                <p>You didn't add any sources!</p>
+                {% else %}
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="table-success">
+                                <th scope="col">Link</th>
+                                <th scope="col">Adding Date</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for source in links %}
+                                <tr>
+                                    <td>{{source.link}}</td>
+                                    <td>{{source.adding_date}}</td>
+                                    <td>
+                                        <form action="{% url 'delete_source' source.id %}" method="POST">
+                                            {% csrf_token %}
+                                            <button type='submit' class="btn text-danger">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}
