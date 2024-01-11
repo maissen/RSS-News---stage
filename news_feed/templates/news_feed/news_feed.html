@@ -9,23 +9,30 @@
     <a href="{% url 'news_sources' %}" class="btn btn-outline-primary">Consult news sources</a>
     <hr/>
     <h3 class="mb-4">Feed : </h3>
-    {% if entries %}
-        <div class="row">
-            {% for article in entries %}
-                    <div class="col-6 col-lg-3 mb-4">
-                        <div class="card" style="width: 18rem;">
-                            <div class="card-body">
-                            <h5 class="card-title">{{ article.title }}</h5>
-                            <h6 class="card-subtitle mb-2 text-body-secondary">Published : {{ article.published }}</h6>
-                            <p class="card-text">{{ article.description }}</p>
-                            <a class="card-link" href="{{ article.link }}">Visit link</a>
+    {% if feeds %}
+        {% for feed in feeds %}
+            <div class="row mb-3 px-4">
+                <h4>{{ feed.feed_title }}</h4>
+                {% if feed.feed_entries == "Doesn't have any news" %}
+                    <p>Doesn't have any news</p>
+                    {% else %}
+                        {% for entry in feed.feed_entries %}
+                            <div class="col-6 col-lg-3 mb-4">
+                                <div class="card" style="width: 18rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ entry.title }}</h5>
+                                        <h6 class="card-subtitle mb-2 text-body-secondary">Published: {{ entry.published }}</h6>
+                                        <p class="card-text">{{ entry.description }}</p>
+                                        <a class="card-link" href="{{ entry.link }}">Visit link</a>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <p style="display: inline-block;" class="me-3">You didn't add any RSS links!</p>
-        <a href="{% url 'news_sources' %}" class="btn btn-outline-success">Add Now</a>
+                        {% endfor %}
+                {% endif %}
+            </div>
+        {% endfor %}
+        {% else %}
+            <p style="display: inline-block;" class="me-3">You didn't add any RSS links!</p>
+            <a href="{% url 'news_sources' %}" class="btn btn-outline-success">Add Now</a>
     {% endif %}
 {% endblock %}
