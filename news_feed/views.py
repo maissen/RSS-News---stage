@@ -2,14 +2,19 @@ from django.shortcuts import render, redirect
 from feedparser import parse
 from .models import *
 
-def news_feed(request):
-    articles = []
 
-    if request.method == 'POST':
-        feed = parse(request.POST.get('source_url'))
-        articles = feed.entries
+def news_feed(request):
+
+    sources = NewsSource.objects.all()
+    entries = [] 
+    for link in sources:
+        feed = parse(link.url)
+        if 'entries' in feed:
+            entries.extend(feed.entries)
+        else: 
+            continue
             
-    context = {'articles': articles}
+    context = {'entries': entries}
     return render(request, 'news_feed/news_feed.html', context)
 
 
@@ -19,18 +24,16 @@ def news_sources(request):
     return render(request, 'news_feed/news_sources.html', context)
 
 
-
 def add_source(request):
     if request.method == 'POST':
         source_link = request.POST.get('source_link')
-        if not source_link:
-            return redirect('news_sources')
         
         try:
-            NewsSource.objects.create(link=source_link)
-        except:
+            existing_source = NewsSource.objects.get(url=source_link)
+        except NewsSource.DoesNotExist:
+            NewsSource.objects.create(url=source_link)
             return redirect('news_sources')
-            
+        
     return redirect('news_sources')
 
 

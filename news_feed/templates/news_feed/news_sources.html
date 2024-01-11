@@ -7,7 +7,7 @@
 {% block content %}
 
     <h3>News sources !</h3>
-    <a href="{% url 'news_feed' %}">News Feed</a>
+    <a href="{% url 'news_feed' %}">Go To News Feed</a>
     <hr>
     <div class="row">
 
@@ -50,7 +50,7 @@
                         <tbody>
                             {% for source in links %}
                                 <tr>
-                                    <td>{{source.link}}</td>
+                                    <td>{{source.url}}</td>
                                     <td>{{source.adding_date}}</td>
                                     <td>
                                         <form action="{% url 'delete_source' source.id %}" method="POST">
