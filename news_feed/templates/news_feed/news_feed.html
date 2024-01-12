@@ -12,7 +12,8 @@
     {% if feeds %}
         {% for feed in feeds %}
             <div class="row mb-3 px-4">
-                <h4>{{ feed.feed_title }}</h4>
+                <h2 class="text-primary">{{ feed.feed_title }}</h2>
+                <hr>
                 {% if feed.feed_entries == "Doesn't have any news" %}
                     <p>Doesn't have any news</p>
                     {% else %}
