@@ -26,8 +26,9 @@ def news_feed(request):
 
 
 def news_sources(request):
+    categories = SourceCategory.objects.all()
     sources = NewsSource.objects.all()
-    context = {'links': sources}
+    context = {'categories': categories, 'links': sources}
     return render(request, 'news_feed/news_sources.html', context)
 
 
@@ -51,5 +52,16 @@ def delete_source(request, source_id):
         except:
             return redirect('news_sources')
             
+    return redirect('news_sources')
+
+
+def add_category(request):
+
+    if request.method == 'POST':
+        category_title = request.POST.get('category_title').capitalize()
+        SourceCategory.objects.create(
+            title=category_title
+        )
+
     return redirect('news_sources')
 
