@@ -11,10 +11,12 @@
 
     <div class="row mt-4">
 
-        <!--? Adding new category  -->
+        <!--? Adding/Deleting category  -->
         <div class="col-12 col-lg-6 mb-4">
             <p class="bg-primary p-3 text-light h5">Add new Category</p>
-            <form action="{% url 'add_category' %}" method="POST" style="border: 2px solid gray; border-top: 0;" class="p-3 pt-0">
+
+            <!--! Adding new category  -->
+            <form action="{% url 'add_category' %}" method="POST" style="border: 2px solid gray; border-top: 0; border-bottom: 0;" class="p-3 pt-0">
                 {% csrf_token %}
                 <div class="col-7">
                     <div class="row g-3 align-items-center mb-3">
@@ -31,6 +33,42 @@
                     <button class="btn btn-danger" type="reset">Cancel</button>
                 </div>
             </form>
+
+            <!--! Deleting a category  -->
+            <p class="bg-primary p-3 text-light h5">Delete a Category</p>
+            <div style="border: 2px solid gray; border-top: 0;" class="p-3 pt-0">
+                <div class="col-7">
+                    <div class="row g-3 mb-3">
+                        <div class="col-auto">
+                            <label for="category_for_deletion" class="col-form-label">Select Category : </label>
+                        </div>
+                        <div class="col-auto">
+                            {% if categories|length > 1 %}
+                                <script>
+                                    // alert("{{categories|length}}")
+                                </script>
+                                <form action="{% url 'delete_category' %}" method="POST">
+                                    {% csrf_token %}
+                                    <select name="category_for_deletion" id="category_for_deletion">
+                                        {% for category in categories %}
+                                            {% if not category.title == "No Category" %}
+                                                <option value="{{category.id}}">{{category}}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    <button class="btn btn-danger" type="submit">Delete Category</button>
+                                </form>
+                                {% else %}
+                                <select id="category_for_deletion">
+                                    <option value="empty">-- No categories available --</option>
+                                </select>
+                                    <button class="btn btn-danger" disabled>Delete Category</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
         
         <!--? Adding new sources  -->
@@ -44,7 +82,7 @@
                             <label for="source_title" class="col-form-label">Title : </label>
                         </div>
                         <div class="col-auto">
-                            <input type="text" id="source_title" class="form-control" name="source_link" placeholder="Enter Title..." required autofocus>
+                            <input type="text" id="source_title" class="form-control" name="source_title" placeholder="Enter Title..." required autofocus>
                         </div>
                     </div>
                     <div class="row g-3 align-items-center mb-3">
@@ -61,10 +99,9 @@
                         </div>
                         <div class="col-auto">
                             <select name="source_category" id="source_category">
-                                <option value="empty">Without a category</option>
                                 {% if categories %}
                                     {% for category in categories %}
-                                        <option value="{{category}}">{{category}}</option>
+                                        <option value="{{category.id}}">{{category.title}}</option>
                                     {% endfor %}
                                 {% endif %}
                             </select>
@@ -79,9 +116,9 @@
         </div>
 
         <!--? Consulting sources  -->
-        <div class="col-12 col-lg-6">
+        <div class="col-10 mt-4">
             <p class="bg-primary p-3 text-light h5 m-0">Current sources</p>
-            <div style="border: 2px solid gray; border-top: 0;" class="p-3 pt-0">
+            <div style="border: 2px solid gray; border-top: 0;" class="pt-0">
 
                 {% if not links %}
                     <p>You didn't add any sources!</p>
@@ -89,6 +126,8 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr class="table-success">
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Category</th>
                                     <th scope="col">Link</th>
                                     <th scope="col">Adding Date</th>
                                     <th scope="col"></th>
@@ -97,6 +136,8 @@
                             <tbody>
                                 {% for source in links %}
                                     <tr>
+                                        <td>{{source.title}}</td>
+                                        <td>{{source.category.title}}</td>
                                         <td>{{source.url}}</td>
                                         <td>{{source.adding_date}}</td>
                                         <td>

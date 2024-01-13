@@ -12,6 +12,7 @@ class SourceCategory(models.Model):
 
 
 class NewsSource(models.Model):
+    title = models.CharField(max_length=255, default='Untitled')
     url = models.URLField(unique=True)
     category = models.ForeignKey(SourceCategory, on_delete=models.CASCADE, null=True)
     adding_date = models.DateTimeField(auto_now_add=True)
