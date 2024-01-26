@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block page_title %}{{page}}{% endblock page_title %}
+
+{% block content %}
+    {% if page == 'Log In'%}
+        <h1>Log In</h1>
+        <hr class="mb-4">
+        <form action="" method="POST">
+            {% csrf_token %}
+
+            <input type="text" name="username" placeholder="Enter your Username" autofocus>
+            <input type="password" name="password" placeholder="Enter your Password">
+            <button type="submit" class="btn btn-outline-success">Log In</button>
+        </form>
+        <hr class="my-2">
+        <a href="{% url 'user_register' %}" class="btn text-primary">You don't have an account ?</a>
+
+        {% else %}
+            <h1>Sign In</h1>
+            <hr class="mb-4">
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{form}}
+                <button type="submit" class="btn btn-outline-success">Register Now</button>
+                <a href="{% url 'welcome' %}" class="btn btn-dabger">Cancel</a>
+            </form>
+    {% endif %}
+    
+{% endblock content %}

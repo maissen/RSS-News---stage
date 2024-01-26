@@ -5,49 +5,50 @@
 {% block page_title %}News Feed{% endblock page_title %}
 
 {% block content %}
-    <h3>Welcome!</h3>
+    <h3>Welcome {{request.user.username}}!</h3>
+    <a href="{% url 'user_logout' %}">Log out</a>
+    <br>
     <a href="{% url 'news_sources' %}" class="btn btn-outline-primary">Consult news sources</a>
     <hr/>
     <div class="row">
 
         <!--! Categories links  -->
-        <div class="col-12 col-lg-3">
-            <h3 class="mb-4">Categories : </h3>
-            <hr>
-            {% if not categories %}
-                <p style="display: inline-block;" class="me-3">You didn't add any Categories!</p>
-                <a href="{% url 'news_sources' %}" class="btn btn-outline-success">Add Now</a>
+        <div class="col-12 col-lg-3" style="height: 100;">
+            <div style="position: sticky; top: 20px; z-index: 1000;">
+                <h3 class="mb-4">Categories : </h3>
+                <hr>
+                {% if not categories %}
+                    <p style="display: inline-block;" class="me-3">You didn't add any Categories!</p>
+                    <a href="{% url 'news_sources' %}" class="btn btn-outline-success">Add Now</a>
 
-                {% else %}
-                    <ul style="list-style-type: none;">
-                        {% for category in categories %}
-                            <li class="">
-                                <a href="#{{category.id}}" class="text-primary btn">
-                                    {{category.title}} ({{category.newssource_set.count}})
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-            {% endif %}
-
+                    {% else %}
+                        <ul style="list-style-type: none;">
+                            {% for category in categories %}
+                                <li class="">
+                                    <a href="#{{category.id}}" class="text-primary btn">
+                                        {{category.title}} ({{category.newssource_set.count}})
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                {% endif %}
+            </div>
         </div>
         
         <!--! Feed  -->
         <div class="col-12 col-lg-9">
             <h3 class="mb-4">Feed :</h3>
             <hr>
-        
-            {% for category_data in feeds_by_category %}
-                {% if category_data.feeds|length > 0 %}
-                    <div class="mb-4">
-                        <button class="btn btn-primary" id="{{category_data.category.id}}" type="button" data-bs-toggle="collapse" data-bs-target="#{{category_data.category.id}}" aria-expanded="false" aria-controls="">
-                            <h6 class="text-light">{{ category_data.category.title }}</h6>
-                        </button>
-                        <div class="collapse mt-3 table-primary" id="{{category_data.category.id}}">
-                            <div class="card card-body">
+            {% if not user_sources %}
+                <p style="display: inline-block;" class="me-3">You didn't add any RSS links!</p>
+                <a href="{% url 'news_sources' %}" class="btn btn-outline-success">Add Now</a>
+                {% else %}
+                    {% for category_data in feeds_by_category %}
+                        {% if category_data.feeds|length > 0 %}
+                            <div class="mb-4">  
                                 {% for feed in category_data.feeds %}
                                     <div class="row mb-3">
-                                        <h4 class="text-light p-2 bg-secondary">Source Title : {{ feed.source_title }}</h4>
+                                        <h4 class="text-light p-2 bg-secondary" id="{{category_data.category.id}}">Source Title : {{ feed.source_title }}</h4>
                                         <h5 class="text-primary">Feed Title : {{ feed.feed_title }}</h5>
                                         <hr>
                                         <div class="row">
@@ -70,17 +71,11 @@
                                             {% endfor %}
                                         </div>
                                     </div>
-                                {% endfor %}
+                                {% endfor %}    
                             </div>
-                        </div>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        
-            {% if feeds_by_category|length == 0 %}
-                <p style="display: inline-block;" class="me-3">You didn't add any RSS links!</p>
-                <a href="{% url 'news_sources' %}" class="btn btn-outline-success">Add Now</a>
-            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+            {% endif %}           
         </div>
     </div>
 {% endblock %}

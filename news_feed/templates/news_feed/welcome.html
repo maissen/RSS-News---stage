@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Welcome{% endblock page_title %}
+
+{% block content %}
+    <p class="h3">Welcome</p>
+    <hr class="mb-4">
+    <a href="{% url 'user_login' %}" class="btn text-success">Log In</a>
+    <a href="{% url 'user_register' %}" class="btn text-success">Register</a>
+{% endblock content %}

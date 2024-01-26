@@ -6,7 +6,9 @@
 
 {% block content %}
 
-    <h3>News sources !</h3>
+    <h3>News sources of {{request.user.username}}!</h3>
+    <a href="{% url 'user_logout' %}">Log out</a>
+    <br>
     <a href="{% url 'news_feed' %}">Go To News Feed</a>
 
     <div class="row mt-4">
@@ -44,9 +46,6 @@
                         </div>
                         <div class="col-auto">
                             {% if categories|length > 1 %}
-                                <script>
-                                    // alert("{{categories|length}}")
-                                </script>
                                 <form action="{% url 'delete_category' %}" method="POST">
                                     {% csrf_token %}
                                     <select name="category_for_deletion" id="category_for_deletion">
