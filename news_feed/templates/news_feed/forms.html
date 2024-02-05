@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block page_title %}{{page}}{% endblock page_title %}
+{% block page_title %}Login | Register{% endblock page_title %}
 
 {% block content %}
 
@@ -99,57 +99,52 @@
         }
     </style>
 
-    {% if page == 'Log In'%}
 
-        <div class="login-page">
-            <div class="form">
-                <form class="login-form" action="{% url 'user_login' %}" method="POST">
-                    {% csrf_token %}
-                    <h1>Log In</h1>
-                    <hr class="mb-4">
-                    <input required type="text" name="username" placeholder="Enter your Username" autofocus/>
-                    <input required type="password" name="password" placeholder="Enter your Password"/>
-                    <button type="submit">Log in</button>
-                    <p class="message">Not registered? <a href="#">Create an account</a></p>
-                </form>
-
-                <form class="register-form" action="{% url 'user_register' %}" method="POST">
-                    {% csrf_token %}
-                    <h1>Sign up</h1>
-                    <hr class="mb-4">
-                    <!-- <input required type="text" placeholder="username"/>
-                    <input required type="text" placeholder="Email"/>
-                    <input required type="text" placeholder="Password"/>
-                    <input required type="password" placeholder="Confirm Password"/> -->
-                    {{ form.username }}
-                    {{ form.email }}
-                    {{ form.password1 }}
-                    {{ form.password2 }}
-                    <button type="submit">Sign Up Now</button>
-                    <p class="message">Already registered? <a href="#">Sign In</a></p>
-                </form>
-            </div>
-        </div>
-
-        <!-- Include jQuery -->
-        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-        
-        <script>
-            $('.message a').click(function(){
-                $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
-            });
-        </script>
-
-
-        {% else %}
-            <!-- <h1>Sign In</h1>
-            <hr class="mb-4">
-            <form action="" method="POST">
+    <div class="login-page">
+        <div class="form">
+            <form class="login-form" action="{% url 'user_login' %}" method="POST">
                 {% csrf_token %}
-                {{form}}
-                <button type="submit" class="btn btn-outline-success">Register Now</button>
-                <a href="{% url 'welcome' %}" class="btn btn-dabger">Cancel</a>
-            </form> -->
-    {% endif %}
+                <h1>Log In</h1>
+                <hr class="mb-4">
+                <input required type="text" name="username" placeholder="Enter your Username" autofocus/>
+                <input required type="password" name="password" placeholder="Enter your Password"/>
+                <button type="submit">Log in</button>
+                <p class="message">Not registered? <a href="#">Create an account</a></p>
+            </form>
+
+            <form class="register-form" action="{% url 'user_register' %}" method="POST">
+                {% csrf_token %}
+                <h1>Sign up</h1>
+                <hr class="mb-4">
+                {{ form.username }}
+                {{ form.email }}
+                {{ form.password1 }}
+                {{ form.password2 }}
+                <button type="submit">Sign Up Now</button>
+                <p class="message">Already registered? <a href="#">Sign In</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    
+    <!-- for the forms animation -->
+    <script>
+        $('.message a').click(function(){
+            $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
+        });
+    </script>
+
+    <!-- for displaying error messages -->
+    <script>
+        {% if messages %}
+            $(document).ready(function(){
+                {% for message in messages %}
+                    alert("{{ message|escapejs }}"); return false;
+                {% endfor %}
+            });
+        {% endif %}
+    </script>
     
 {% endblock content %}

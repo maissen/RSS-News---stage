@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from .forms import UserForm
 from django.contrib.auth.models import User
+from django.contrib import messages
 
 
 def welcome(request):
@@ -27,21 +28,21 @@ def user_login(request):
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
-            print("User does not exist!")
+            messages.error(request, "User does not exist!")
         else:
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
                 return redirect("news_feed")
             else:
-                print("Verify your password!")
+                messages.error(request, "Verify your password please!")
 
     form = UserForm()
     context = {
-        'page': 'Log In',
         'form': form,
     }
     return render(request, 'news_feed/forms.html', context)
+
 
 
 @login_required(login_url='user_login')
@@ -62,8 +63,17 @@ def user_register(request):
             user.save()
             login(request, user)
             return redirect("news_feed")
-        print('oops!')
-    
+        else:
+            if 'email' in form.errors:
+                messages.error(request, 'Invalid email address.')
+            if 'username' in form.errors:
+                messages.error(request, 'Username is already taken.')
+            if 'password1' in form.errors:
+                messages.error(request, 'Invalid password.')
+            if 'password2' in form.errors:
+                messages.error(request, 'Confirmation password does not match.')
+            return redirect("user_login")
+
     context = {
         'page': 'Register',
     }

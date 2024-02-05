@@ -12,7 +12,7 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav ms-auto">
                     <a class="nav-item nav-link mx-2 {% if request.path == '/feed/' %}active text-primary{% endif %}" href="{% url 'news_feed' %}"><i class="fa-solid fa-rss me-2"></i>Feed</a>
-                    <a class="nav-item nav-link mx-2 {% if request.path == '/sources/' %}active text-primary{% endif %}" href="{% url 'news_sources' %}"><i class="fa-solid fa-gear me-2"></i>Consult news sources</a>
+                    <a class="nav-item nav-link mx-2 {% if request.path == '/sources/' %}active text-primary{% endif %}" href="{% url 'news_sources' %}"><i class="fa-solid fa-gear me-2"></i>News Sources</a>
                     <a class="nav-item nav-link mx-2 {% if request.path == '/logout/' %}active text-primary{% endif %}" href="{% url 'user_logout' %}"><i class="fa-solid fa-right-from-bracket me-2"></i>Log out</a>
                 </div>
             </div>
