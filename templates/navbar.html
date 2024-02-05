@@ -1,0 +1,21 @@
+{% block content %}
+
+    <nav class="navbar navbar-expand-lg position-fixed">
+        <div class="container">
+            <a class="navbar-brand text-primary">
+                <i class="fa-solid fa-user me-2"></i>
+                <span>{{ request.user.username }}</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-item nav-link mx-2 {% if request.path == '/feed/' %}active text-primary{% endif %}" href="{% url 'news_feed' %}"><i class="fa-solid fa-rss me-2"></i>Feed</a>
+                    <a class="nav-item nav-link mx-2 {% if request.path == '/sources/' %}active text-primary{% endif %}" href="{% url 'news_sources' %}"><i class="fa-solid fa-gear me-2"></i>Consult news sources</a>
+                    <a class="nav-item nav-link mx-2 {% if request.path == '/logout/' %}active text-primary{% endif %}" href="{% url 'user_logout' %}"><i class="fa-solid fa-right-from-bracket me-2"></i>Log out</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+{% endblock content %}

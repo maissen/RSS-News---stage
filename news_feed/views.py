@@ -36,8 +36,10 @@ def user_login(request):
             else:
                 print("Verify your password!")
 
+    form = UserForm()
     context = {
-        'page': 'Log In'
+        'page': 'Log In',
+        'form': form,
     }
     return render(request, 'news_feed/forms.html', context)
 
@@ -62,11 +64,8 @@ def user_register(request):
             return redirect("news_feed")
         print('oops!')
     
-    form = UserForm()
-
     context = {
         'page': 'Register',
-        'form': form,
     }
     return render(request, 'news_feed/forms.html', context)
 
